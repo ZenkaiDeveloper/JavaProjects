@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class Album {
     private String name;
-    private static ArrayList<Album> allAlbums;
+    private static ArrayList<Album> allAlbums = new ArrayList<Album>();
     private ArrayList<Song> songs;
 
     public Album(String name) {
@@ -18,6 +18,10 @@ public class Album {
         return name;
     }
 
+    public static ArrayList<Album> getAllAlbums() {
+        return allAlbums;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -27,10 +31,10 @@ public class Album {
     }
 
     public void addSong(Song song){
-        if(!getSong(song.getTitle())){
-            this.songs.add(song);
-        }else{
+        if(getSong(song)){
             System.out.println("Cannot add this song");
+        }else{
+            this.songs.add(song);
         }
 
 
@@ -39,8 +43,18 @@ public class Album {
     public static boolean getAlbum(String name){
         for(int i=0;i<allAlbums.size();i++){
             String currentAlbum = allAlbums.get(i).getName();
-            if(currentAlbum === name){
-                return true
+            if(currentAlbum == name){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean getSong(Song song){
+        for(int i=0;i<songs.size();i++){
+            Song current = songs.get(i);
+            if (current == song){
+                return true;
             }
         }
         return false;
@@ -58,8 +72,9 @@ public class Album {
 
     public void addToPlaylist(int trackNumber, LinkedList<Song> songs){
         int index = trackNumber-1;
-        if(index >= 0 && index< songs.size()){
+        if(index >= 0 && index< this.getSongs().size()){
             songs.add(this.getSongs().get(index));
+            System.out.println("Added " + this.getSongs().get(index).getTitle() + " to playlist.");
         }else{
             System.out.println("Sorry, track does not exist");
         }
